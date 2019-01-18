@@ -1,8 +1,8 @@
 API及测试程序使用手册
 ====  
 
-一、注意事项：
-____
+## 一、注意事项：
+
 1.运行环境x86_64,目前在Ubuntu 14.04、16.04、18.04, centos7.5测试可用，其它64位linux系统理论上来说可用。
 
 2.aarch64 ubuntu16.04测试可用,其它64位linux系统理论上来说可用。
@@ -17,18 +17,18 @@ ____
 
 7.imu数据频率(imuFreq) 目前只支持 <1000hz, 且需要满足相邻两帧imu数据时间间隔为 >0 整数
 
-#二、API调用
+## 二、API调用
 以下是基本函数调用说明，具体操作参考main.c
-##1）包含下indem 命名空间
+### 1）包含下indem 命名空间
 ~~~
 using namespace indem;
 ~~~
-##2) 调用DriverFactory()函数返回api对象指针;
+### 2) 调用DriverFactory()函数返回api对象指针;
 ~~~
 如：IDriverInterface *driver = DriverFactory();
 ~~~
-##3）设置回调函数
-###a)根据以下几个定义，实现三个回调函数，用于接收相关数据，回调函数参数定义可参考include/DriverInterface.h
+### 3）设置回调函数
+#### a)根据以下几个定义，实现三个回调函数，用于接收相关数据，回调函数参数定义可参考include/DriverInterface.h
 ~~~
     typedef void(*DriverCameraDataCallback)(cameraData* data);
     typedef void(*DriverIMUDataCallback)(IMUData* data);
@@ -39,7 +39,7 @@ using namespace indem;
         void CameraCallbackFunction(cameraData* data)；
         void HMDHotplugCallback_func (bool bArrive)；
 ~~~
-###b)获取标定参数
+#### b)获取标定参数
 ~~~
     函数原型:
         bool GetModuleParams(int& version, unsigned char* params, size_t& len)
@@ -55,7 +55,7 @@ using namespace indem;
         driver->GetModuleParams(version, module_info, info_size);
         memcpy(&moddule_param, module_info, sizeof(struct ModuleParameters));
 ~~~
-###b)调用设备打开接口，打开模组
+#### b)调用设备打开接口，打开模组
 ~~~
     函数原型:
         bool Open(int imuFreq=1000,int imgFreq=50, IMAGE_RESOLUTION resolution= RESOLUTION_DEFAULT)
@@ -66,15 +66,15 @@ using namespace indem;
     调用如下:
         driver->Open(1000, 50, RESOLUTION_1280);
 ~~~
-###c)调用回调函数接口配置回调函数  
+#### c)调用回调函数接口配置回调函数  
 ~~~
     如： 
         driver->SetCameraCallback(CameraCallbackFunction);
         driver->SetIMUCallback(ImuCallBackFunction);
         SetHotplugCallback(HMDHotplugCallback_func);
 ~~~
-#测试程序编译和使用
-##aarch64:
+## 测试程序编译和使用
+### aarch64:
 ~~~
     交叉编译工具下载:
         下载链接  https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/
@@ -88,7 +88,7 @@ using namespace indem;
       sudo ./main.sh width height camfps imufreq
       如：sudo ./main.sh 640 400 25 200
 ~~~
-##x86_64:
+### x86_64:
 ~~~
     编译：
        ./build.sh
