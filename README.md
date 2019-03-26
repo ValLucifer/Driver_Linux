@@ -1,7 +1,7 @@
 API及测试程序使用手册
 ====  
 
-## 一、注意事项：
+## 一、注意事项：（模组新增 1280x800x2 100fps, 640x400x2 100fps 200fps 需要更新模组固件）
 
 1.运行环境x86_64,目前在Ubuntu 14.04、16.04、18.04, centos7.5测试可用，其它64位linux系统理论上来说可用。
 
@@ -60,7 +60,7 @@ API及测试程序使用手册
     函数原型:
         bool Open(int imuFreq=1000,int imgFreq=50, IMAGE_RESOLUTION resolution= RESOLUTION_DEFAULT)
             param1: imu数据频率(imuFreq) 目前只支持 <1000hz 且需要满足 1000/imuFreq 为>0 整数（imu寄存器中是以时间间隔为单位配置的）
-            param2: 图像频率 目前支持 25、50
+            param2: 图像频率
             param3: 图像分辨率 参数只支持 RESOLUTION_1280（1280x800x2）、RESOLUTION_640（640x400x2）
             return：false 设备打开失败
     调用如下:
