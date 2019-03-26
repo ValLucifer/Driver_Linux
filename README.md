@@ -5,7 +5,7 @@ API及测试程序使用手册
 
 1.运行环境x86_64,目前在Ubuntu 14.04、16.04、18.04, centos7.5测试可用，其它64位linux系统理论上来说可用。
 
-2.aarch64 ubuntu16.04测试可用,其它64位linux系统理论上来说可用。
+2.运行环境aarch64 ubuntu16.04测试可用,其它64位linux系统理论上来说可用。
 
 3.程序需要使用root权限去运行，arm架构和x86架构需使用不同的动态库文件。
 
@@ -13,19 +13,19 @@ API及测试程序使用手册
 
 5.各个函数参数定义及相关说明请参考include目录下头文件及其注释。
 
-6.camera 支持分辨率 1280x800x2  640x400x2  帧率 25fps  50fps
+6.camera 支持分辨率 1280x800x2 (25fps 50fps 100fps), 640x400x2 (25fps 50fps 100fps 200fps)。
 
 7.imu数据频率(imuFreq) 目前只支持 <1000hz, 且需要满足相邻两帧imu数据时间间隔为 >0 整数
 
 ## 二、API调用
-以下是基本函数调用说明，具体操作参考main.c
+以下是基本函数调用说明，具体操作可参考main.c
 ### 1）包含下indem 命名空间
 ~~~
-using namespace indem;
+    using namespace indem;
 ~~~
 ### 2) 调用DriverFactory()函数返回api对象指针;
 ~~~
-如：IDriverInterface *driver = DriverFactory();
+    如：IDriverInterface *driver = DriverFactory();
 ~~~
 ### 3）设置回调函数
 #### a)根据以下几个定义，实现三个回调函数，用于接收相关数据，回调函数参数定义可参考include/DriverInterface.h
@@ -66,7 +66,7 @@ using namespace indem;
     调用如下:
         driver->Open(1000, 50, RESOLUTION_1280);
 ~~~
-#### c)调用回调函数接口配置回调函数  
+#### c)调用回调函数接口配置回调函数(因驱动中无缓存，回调函数中不宜做过多操作，否则会丢数据)
 ~~~
     如： 
         driver->SetCameraCallback(CameraCallbackFunction);
@@ -83,7 +83,7 @@ using namespace indem;
     解压交叉编译工具， 可根据需要修改交叉编译工具(同时修改build.sh 中 ”CROSS_COMPILE“ 选项)：
         tar -xvJf gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz
     编译：
-       ./build.sh
+        ./build.sh
     运行：
       sudo ./main.sh width height camfps imufreq
       如：sudo ./main.sh 640 400 25 200

@@ -2,6 +2,7 @@
 HEAD_PATH = ./include
 LIB_FLAGS = -I $(HEAD_PATH)
 
+#need to install  opencv3.4.3  libjpeg-dev libpng-dev
 #OPENCV_FLAGS =`pkg-config --libs --cflags opencv`  -ljpeg -lpng
 
 OPENCV_FLAGS ?=
