@@ -1,6 +1,17 @@
 API及测试程序使用手册
 ====  
 
+
+
+##  BUG修复：
+~~~
+2019-09-09:
+	1.修复 调用IDriverInterface::Close() 被阻塞导致主程序退出异常的bug
+	2.修复 获取参数异常，出现段错误的bug，请参main.cpp 56、57行的方式定义参数接收缓冲区
+	    unsigned char *module_info = new unsigned char[FLASH_MAX_SIZE];
+	    ModuleParamInFlash<1> moddule_param = { 0 }; //标定参数等信息等
+~~~
+
 ## 一、注意事项：（模组新增 1280x800x2 100fps, 640x400x2 100fps 200fps 需要更新模组固件）
 
 1.运行环境x86_64,目前在Ubuntu 14.04、16.04、18.04, centos7.5测试可用，其它64位linux系统理论上来说可用。
@@ -85,14 +96,16 @@ API及测试程序使用手册
     编译：
         ./build.sh
     运行：
-      sudo ./main.sh width height camfps imufreq
-      如：sudo ./main.sh 640 400 25 200
+        sudo ./main.sh width height camfps imufreq
+        如：sudo ./main.sh 640 400 25 200
 ~~~
 ### x86_64:
 ~~~
     编译：
-       ./build.sh
+        ./build.sh
     运行：
-      sudo ./main.sh width height camfps imufreq
-      如：sudo ./main.sh 640 400 25 200
+        sudo ./main.sh width height camfps imufreq
+        如：sudo ./main.sh 640 400 25 200
 ~~~
+
+

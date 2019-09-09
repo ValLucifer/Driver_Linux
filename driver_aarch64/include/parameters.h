@@ -22,11 +22,9 @@ IMUParameter 结构体说明
 */
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
-
 #include <type_traits>
-
 #define _G 9.8019967
-using namespace std;
+
 //2组  左、右目
 struct CameraParameter
 {

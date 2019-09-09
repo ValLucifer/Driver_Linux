@@ -7,9 +7,8 @@
 #include <linux/videodev2.h>
 #include "DriverInterface.h"
 
-//使能opencv 图像显示窗口, 需要安装opencv并修改Makefile
+//使能opencv 图像显示窗口, 需要安装opencv并修改Makefile 取消注释  OPENCV_FLAGS
 #define SHOW  0
-
 #if SHOW
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -20,18 +19,18 @@ using namespace indem;
 void ImuCallBackFunction(IMUData* data) {
     char buf[1024];
     //打印imu数据  时间(ms)  ACC（g） GYR (d/s)
-    sprintf(buf, "%-18f %-18f %-18f %-18f %-18f %-18f %-18f\n", data->_timeStamp, data->_acc[0], data->_acc[1], data->_acc[2], data->_gyr[0], data->_gyr[1], data->_gyr[2]);
+    sprintf(buf, "\t\t\t\t%-18f %-18f %-18f %-18f %-18f %-18f %-18f\n", data->_timeStamp, data->_acc[0], data->_acc[1], data->_acc[2], data->_gyr[0], data->_gyr[1], data->_gyr[2]);
     printf("%s", buf);
     return;
 }
 
 void CameraCallbackFunction(cameraData* data) {
-    //打印每帧图像时间  
-    //printf("%f\n", data->_timeStamp);
+    //打印每帧图像时间
+    printf("%f\n", data->_timeStamp);
 #if SHOW
     cv::Mat img(data->_height, data->_width, CV_8UC1, data->_image);
     cv::imshow( "camera", img );
-    cv::waitKey(10);
+    cv::waitKey(2);
     img.release();
 #endif
     return;
@@ -54,8 +53,8 @@ int main(int argc, char **argv) {
     int imufreq = 0;    //imu频率
     int version = 255;  //代码固件版本号，初始值任意
     size_t info_size = 0; //获取到的参数总长度
-    unsigned char *module_info = new unsigned char[sizeof(struct ModuleParameters)];
-    struct ModuleParameters moddule_param = {0}; //标定参数等信息等
+    unsigned char *module_info = new unsigned char[FLASH_MAX_SIZE];
+    ModuleParamInFlash<1> moddule_param = { 0 }; //标定参数等信息等
     IDriverInterface *driver = DriverFactory();
     enum IMAGE_RESOLUTION plan = RESOLUTION_640;
 
@@ -74,7 +73,7 @@ int main(int argc, char **argv) {
         }
 
         if (fps != 25 && fps != 50 && fps != 100 && fps != 200) {
-            fps = 25;
+            fps = 50;
         }
         if (fps == 200 && plan != RESOLUTION_640) {
             fps = 100;
@@ -86,7 +85,7 @@ int main(int argc, char **argv) {
     } else {
         width = 1280;
         height = 800;
-        fps = 50;
+        fps = 25;
         imufreq = 1000;
     }
     //获取标定参数等信息等
@@ -94,23 +93,24 @@ int main(int argc, char **argv) {
     if (ret != true) {
         printf("Get params faild\n");
     } else {
-        memcpy(&moddule_param, module_info, sizeof(struct ModuleParameters));
+        memcpy(&moddule_param, module_info, info_size);
     }
     //打开设备
     ret = driver->Open(imufreq, fps, plan);
     ret = 0;
     if (ret < 0) {
-        printf("open err\n");
+        printf("Open device err\n");
     } else {
         driver->SetCameraCallback(CameraCallbackFunction);
         driver->SetIMUCallback(ImuCallBackFunction);
         SetHotplugCallback(HMDHotplugCallback_func);
     }
-    //	sleep(5);
-    //关闭设备
-    //	driver->Close();
+
+//      关闭设备
+//      sleep(10);
+//   	driver->Close();
     while (1) {
-        sleep(3600);
+        sleep(200);
     }
     return 0;
 }
