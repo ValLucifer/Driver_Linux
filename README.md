@@ -18,7 +18,7 @@ API及测试程序使用手册
 
 2.运行环境aarch64 ubuntu16.04测试可用,其它64位linux系统理论上来说可用。
 
-3.程序需要使用root权限去运行，arm架构和x86架构需使用不同的动态库文件。
+3.程序需要使用root权限去运行，aarch64架构和x86_64架构需使用不同的动态库文件。
 
 4.模组需要插到usb3.0接口上使用。
 
@@ -27,6 +27,8 @@ API及测试程序使用手册
 6.camera 支持分辨率 1280x800x2 (25fps 50fps 100fps), 640x400x2 (25fps 50fps 100fps 200fps)。
 
 7.imu数据频率(imuFreq) 目前只支持 <1000hz, 且需要满足相邻两帧imu数据时间间隔为 >0 整数
+
+8.固件更新方法 https://github.com/INDEMIND/ModuleFirmwareUpdate.git
 
 ## 二、API调用
 以下是基本函数调用说明，具体操作可参考main.c
